@@ -4,14 +4,10 @@
 # It sets variables according to platform.
 #
 class account::params {
-  case $::osfamily {
-    'Debian': {
-      $package_name = 'account'
-      $service_name = 'account'
-    }
-    'RedHat', 'Amazon': {
-      $package_name = 'account'
-      $service_name = 'account'
+  case $::operatingsystem {
+    'Debian', 'Ubuntu',
+    'RedHat', 'CentOS',
+    'Amazon': {
     }
     default: {
       fail("${::operatingsystem} not supported")
