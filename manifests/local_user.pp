@@ -26,22 +26,47 @@ define account::local_user {
     $local_user_shell = '/bin/bash'
   }
 
-  user { $local_user_name:
-    ensure => 'present',
-    gid => $local_user['gid'],
-    groups =>$local_user['groups'],
-    home => $local_user_home,
-    managehome => true,
-    shell => $local_user_shell,
-    purge_ssh_keys => true,
+  if ($local_user['system']) {
+    $local_user_system = true
+  }
+  else {
+    $local_user_system = false
   }
 
-  validate_array($local_user['pubkeys'])
-  $local_user['pubkeys'].each |$pubkey| {
+  if ($local_user['uid']) {
+    user { $local_user_name:
+      ensure         => 'present',
+      uid            => $local_user['uid'],
+      gid            => $local_user['gid'],
+      groups         => $local_user['groups'],
+      home           => $local_user_home,
+      managehome     => true,
+      shell          => $local_user_shell,
+      purge_ssh_keys => true,
+      system         => $local_user_system,
+    }
+  }
+  else {
+    user { $local_user_name:
+      ensure         => 'present',
+      gid            => $local_user['gid'],
+      groups         => $local_user['groups'],
+      home           => $local_user_home,
+      managehome     => true,
+      shell          => $local_user_shell,
+      purge_ssh_keys => true,
+      system         => $local_user_system,
+    }
+  }
+
+  if ($local_user['pubkeys']) {
+    validate_array($local_user['pubkeys'])
+    $local_user['pubkeys'].each |$pubkey| {
       ssh_authorized_key { "${local_user_name}@${::fqdn}":
         user => $local_user_name,
         type => $pubkey['type'],
         key  => $pubkey['key'],
       }
+    }
   }
 }
