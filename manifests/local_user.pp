@@ -61,8 +61,8 @@ define account::local_user {
 
   if ($local_user['pubkeys']) {
     validate_array($local_user['pubkeys'])
-    $local_user['pubkeys'].each |$pubkey| {
-      ssh_authorized_key { "${local_user_name}@${::fqdn}":
+    $local_user['pubkeys'].each |$index, $pubkey| {
+      ssh_authorized_key { "${local_user_name}@key${index}":
         user => $local_user_name,
         type => $pubkey['type'],
         key  => $pubkey['key'],
