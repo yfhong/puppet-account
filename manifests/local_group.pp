@@ -12,7 +12,7 @@ define account::local_group {
   $local_group_name = $title
   $local_group = $account::groups_db[$local_group_name]
 
-  if ($local_group['gid']) {
+  if (num2bool($local_group['gid'])) {
     group { $local_group_name:
       ensure => 'present',
       gid    => $local_group['gid'],
