@@ -4,27 +4,6 @@
 #
 class account::config {
 
-  file_line { 'uid_min':
-    path  => '/etc/login.defs',
-    line  => "UID_MIN ${account::start_uid}",
-    match => "[#\s]*UID_MIN.*",
-  }
-  file_line { 'uid_max':
-    path  => '/etc/login.defs',
-    line  => "UID_MAX ${account::end_uid}",
-    match => "[#\s]*UID_MAX.*",
-  }
-  file_line { 'gid_min':
-    path  => '/etc/login.defs',
-    line  => "GID_MIN ${account::start_gid}",
-    match => "[#\s]*GID_MIN.*",
-  }
-  file_line { 'gid_max':
-    path  => '/etc/login.defs',
-    line  => "GID_MAX ${account::end_gid}",
-    match => "[#\s]*GID_MAX.*",
-  }
-
   if ($::operatingsystem == 'Debian' or $::operatingsystem == 'Ubuntu') {
     file_line { 'first_uid':
       path  => '/etc/adduser.conf',
