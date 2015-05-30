@@ -25,8 +25,11 @@ class account::config {
       line  => "LAST_GID=${account::end_gid}",
       match => "[#\s]*LAST_GID.*",
     }
-}
-  account::local_group{$account::local_groups:}
+  }
 
-  account::local_user{$account::local_users:}
+  $local_groups = hiera_array('account::local_groups')
+  account::local_group{$local_groups:}
+
+  $local_users = hiera_array('account::local_users')
+  account::local_user{$local_users:}
 }
