@@ -35,27 +35,29 @@ define account::local_user {
 
   if ($local_user['uid']) {
     user { $local_user_name:
-      ensure         => 'present',
-      uid            => $local_user['uid'],
-      gid            => $local_user['gid'],
-      groups         => $local_user['groups'],
-      home           => $local_user_home,
-      managehome     => true,
-      shell          => $local_user_shell,
-      purge_ssh_keys => true,
-      system         => $local_user_system,
+      ensure           => 'present',
+      uid              => $local_user['uid'],
+      gid              => $local_user['gid'],
+      groups           => $local_user['groups'],
+      home             => $local_user_home,
+      managehome       => true,
+      shell            => $local_user_shell,
+      purge_ssh_keys   => true,
+      system           => $local_user_system,
+      password_max_age => 99999,
     }
   }
   else {
     user { $local_user_name:
-      ensure         => 'present',
-      gid            => $local_user['gid'],
-      groups         => $local_user['groups'],
-      home           => $local_user_home,
-      managehome     => true,
-      shell          => $local_user_shell,
-      purge_ssh_keys => true,
-      system         => $local_user_system,
+      ensure           => 'present',
+      gid              => $local_user['gid'],
+      groups           => $local_user['groups'],
+      home             => $local_user_home,
+      managehome       => true,
+      shell            => $local_user_shell,
+      purge_ssh_keys   => true,
+      system           => $local_user_system,
+      password_max_age => 99999,
     }
   }
 
